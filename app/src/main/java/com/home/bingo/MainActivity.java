@@ -269,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
     @Override
     public void onClick(View v) {
+        //TODO
         int avatarId =0;
         switch (avatarId) {
             case R.id.avatar_0:
