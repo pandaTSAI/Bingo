@@ -1,7 +1,13 @@
 package com.home.bingo;
 
 public class Room {
-    String id;
+    public static final int STATUS_INIT = 0;
+    public static final int STATUS_JOINED = 1;
+    public static final int STATUS_CREATORS_TURN = 2;
+    public static final int STATUS_JOINERS_TURN = 3;
+    public static final int STATUS_CREATOR_BINGO = 4;
+    public static final int STATUS_JOINER_BINGO = 5;
+    String key;
     String title;
     int status;
     Member creator;
@@ -15,12 +21,12 @@ public class Room {
         this.creator = creator;
     }
 
-    public String getId() {
-        return id;
+    public String getKey() {
+        return key;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getTitle() {

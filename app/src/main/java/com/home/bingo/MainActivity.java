@@ -84,6 +84,10 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
                                 Log.d(TAG, "onClick: Room key: "+key);
                                 roomRef.child("key").setValue(key);
                                 //TODO : enter game room
+                                Intent bingo = new Intent(MainActivity.this,BingoActivity.class);
+                                bingo.putExtra("ROOM_KEY", key);
+                                bingo.putExtra("IS_CREATOR",true);
+                                startActivity(bingo);
                             }
                         }).setNeutralButton("Cancel",null)
                         .show();
@@ -119,15 +123,24 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
                 .setQuery(query, Room.class).build();
         adapter = new FirebaseRecyclerAdapter<Room, RoomHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull RoomHolder holder, int position, @NonNull Room model) {
+            protected void onBindViewHolder(@NonNull RoomHolder holder, int position, @NonNull final Room model) {
                 holder.title.setText(model.getTitle());
                 holder.image.setImageResource(avatars[model.getCreator().getAvatar()]);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent bingo = new Intent(MainActivity.this,BingoActivity.class);
+                        bingo.putExtra("ROOM_KEY",model.getKey());
+                        bingo.putExtra("IS_CREATOR",false);
+                        startActivity(bingo);
+                    }
+                });
             }
 
             @NonNull
             @Override
-            public RoomHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = getLayoutInflater().inflate(R.layout.item_room, viewGroup,false);
+            public RoomHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+                View view = getLayoutInflater().inflate(R.layout.item_room, parent,false);
                 return new RoomHolder(view);
             }
         };
@@ -215,7 +228,21 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         member = dataSnapshot.getValue(Member.class);
         Log.d(TAG, "onDataChange: "+ member.getUid());
         if (member.getNickName() == null){
-
+            final EditText nickEdit = new EditText(this);
+            new AlertDialog.Builder(this)
+                    .setTitle("Nickname")
+                    .setView(nickEdit)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String nickname = nickEdit.getText().toString();
+                            member.setNickName(nickname);
+                            FirebaseDatabase.getInstance().getReference("users")
+                                    .child(user.getUid())
+                                    .setValue(member);
+                        }
+                    }).setNeutralButton("Cancel",null)
+                    .show();
         }else {
             FirebaseDatabase.getInstance().getReference("users")
                     .child(user.getUid())
@@ -242,6 +269,34 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
     @Override
     public void onClick(View v) {
-
+        int avatarId =0;
+        switch (avatarId) {
+            case R.id.avatar_0:
+                avatarId = 0;
+                break;
+            case R.id.avatar_1:
+                avatarId = 1;
+                break;
+            case R.id.avatar_2:
+                avatarId = 2;
+                break;
+            case R.id.avatar_3:
+                avatarId = 3;
+                break;
+            case R.id.avatar_4:
+                avatarId = 4;
+                break;
+            case R.id.avatar_5:
+                avatarId = 5;
+                break;
+            case R.id.avatar_6:
+                avatarId = 6;
+                break;
+        }
+        FirebaseDatabase.getInstance().getReference("users")
+                .child(user.getUid())
+                .child("avatar")
+                .setValue(avatarId);
+        avatarGroup.setVisibility(View.GONE);
     }
 }
