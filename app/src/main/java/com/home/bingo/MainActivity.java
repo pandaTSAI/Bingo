@@ -269,28 +269,34 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
     @Override
     public void onClick(View v) {
-        //TODO
-        int avatarId =0;
-        switch (avatarId) {
+        int avatarId = 0;
+        switch (v.getId()) {
             case R.id.avatar_0:
+                avatar.setImageResource(R.drawable.avatar_0);
                 avatarId = 0;
                 break;
             case R.id.avatar_1:
+                avatar.setImageResource(R.drawable.avatar_1);
                 avatarId = 1;
                 break;
             case R.id.avatar_2:
+                avatar.setImageResource(R.drawable.avatar_2);
                 avatarId = 2;
                 break;
             case R.id.avatar_3:
+                avatar.setImageResource(R.drawable.avatar_3);
                 avatarId = 3;
                 break;
             case R.id.avatar_4:
+                avatar.setImageResource(R.drawable.avatar_4);
                 avatarId = 4;
                 break;
             case R.id.avatar_5:
+                avatar.setImageResource(R.drawable.avatar_5);
                 avatarId = 5;
                 break;
             case R.id.avatar_6:
+                avatar.setImageResource(R.drawable.avatar_6);
                 avatarId = 6;
                 break;
         }
